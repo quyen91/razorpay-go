@@ -125,6 +125,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	case constants.GATEWAY_ERROR:
 		return nil, errors.New(228801, errorData.Description, http.StatusBadGateway)
 	case constants.BAD_REQUEST_ERROR:
+		return nil, errors.New(228802, errorData.Description, http.StatusBadRequest)
 	default:
 		return nil, errors.New(228802, errorData.Description, http.StatusBadRequest)
 	}
