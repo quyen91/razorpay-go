@@ -119,14 +119,14 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	json.NewDecoder(response.Body).Decode(&jsonResponse)
 	errorData := jsonResponse.ErrorData
 
-	switch errorData.InternalErrorCode {
+	switch errorData.Code {
 	case constants.SERVER_ERROR:
-		return nil, &errors.ServerError{Message: errorData.Description}
+		return nil, errors.New(228800, errorData.Description, http.StatusInternalServerError)
 	case constants.GATEWAY_ERROR:
-		return nil, &errors.GatewayError{Message: errorData.Description}
+		return nil, errors.New(228801, errorData.Description, http.StatusBadGateway)
 	case constants.BAD_REQUEST_ERROR:
 	default:
-		return nil, &errors.BadRequestError{Message: errorData.Description}
+		return nil, errors.New(228802, errorData.Description, http.StatusBadRequest)
 	}
 
 	return processResponse(response)
